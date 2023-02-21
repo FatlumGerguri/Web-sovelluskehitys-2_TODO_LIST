@@ -1,4 +1,7 @@
-<<<<<<< HEAD
+# Web-sovelluskehitys 2
+Ryhmä 3 (R3)
+
+Ryhmän jäsenet: Riku Koski @Arbit3r , Fatlum Gerguri @Vikingi22 , Hussein AL-Bayati @Hussein3030 , Niko Ahonen @tyyppi355
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
