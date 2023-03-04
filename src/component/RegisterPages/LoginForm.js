@@ -1,13 +1,25 @@
-
+import axios from "axios";
 import React, { useState } from "react";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
+import {
+  Container,
+  Button,
+  Col,
+  Form,
+  InputGroup,
+  Row,
+  Card,
+} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
 function Auth(props) {
-  const moveTO = useNavigate();
+  //const moveTO = useNavigate();
+  const [validated, setValidated] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [data, setDataa] = useState([]);
 
-  const gotToNextPage = () => moveTO("/register");
+  //const gotToNextPage = () => moveTO("/register");
 
   const postLogin = () => {
     fetch("http://localhost:5000/login", {
@@ -27,83 +39,111 @@ function Auth(props) {
           } else {
             console.log(result.data);
             localStorage.setItem("username", result.username);
-            moveTO("/register");
+            // moveTO("/register");
           }
           console.log(result);
         })
         .catch((error) => console.log("Error Login form", error));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    postLogin();
-    setPassword("");
-    setUsername("");
+  const handleSubmitLogin = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      postLogin(username, password);
+      event.stopPropagation();
+    }
+
+    setValidated(true);
   };
 
   return (
-    <div className="container">
-      <div className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-        <div className="container">
-          <div className="row d-flex justify-content-center">
-            <div className="col-md-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-              <div class="card mb-3">
-                <div class="card-body">
-                <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                    <p class="text-center small">Enter your username & password to login</p>
-                  </div>
-                  <form
-                    id="loginform"
-                    className="row g-3 needs-validation"
-                    onSubmit={handleSubmit}
-                  >
-                    <div className="form-group">
-                      <label>Email address</label>
-                      <div className="input-group has-validation">
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="UserInput"
-                            name="UserInput"
-                            placeholder="Enter username"
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
+
+      <Container fluid="md">
+        <Row className="vh-100 d-flex justify-content-center align-items-center">
+          <Col md={8} lg={6} xs={12}>
+            <div className="border border-3 border-primary rounded"></div>
+            <Card className="shadow border border-3">
+              <Card.Body>
+                <div className="mb-1 mt-md-4">
+                  <h2 className="fw-bold mb-2 text-uppercase">Log in</h2>
+                  <p className="mb-5">Please enter your login and password!</p>
+                  <div className="mb-5">
+                    <Form
+                        noValidate
+                        validated={validated}
+                        onSubmit={handleSubmitLogin}
+                    >
+                      <Form.Group  controlId="validationCustom01">
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Username"
+                            className="mb-3"
+                        >
+                          <Form.Control
+                              required
+                              type="text"
+                              placeholder="User name"
+                              minLength={4}
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
+                              //{...register("firstName", { required: true, maxLength: 10 })}
+                          /></FloatingLabel>
+                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                          Username should be more then three letter
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <Form.Group
+                          className="mb-3"
+                          controlId="validationCustomPassword"
+                      >
+                        {/*<Form.Label className="text-center">Password</Form.Label>*/}
+                        <FloatingLabel controlId="floatingPassword" label="Password">
+                          <Form.Control
+                              type="password"
+                              placeholder="Password"
+                              value={password}
+                              required
+                              minLength={6}
+                              //pattern={Patter_PASS}
+                              onChange={(e) => setPassword(e.target.value)}
+                              /* {...register("password", {
+                    required: true,
+                    minLength: 6,
+                    pattern: Patter_PASS,
+                  })}*/
+                          /></FloatingLabel>
+                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                          Password should be more then three letter
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <div className="d-grid">
+                        <Button type="submit">Log in</Button>
                       </div>
+                    </Form>
+                    <div className="mt-3">
+                      {/*<p className="mb-0 text-center">
+                      Don't have an account?
+                      <a href="#" className="text-primary fw-bold">
+                        Sign
+                      </a>
+          </p>*/}
+                      <p className="mb-0 text-center">
+                        Already have an account?
+                        <a href="#" className="text-primary fw-bold ">
+                          <Link to="/register"> Sign Up</Link>
+                        </a>
+                      </p>
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="password">Password</label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="exampleInputPassword1"
-                        placeholder="Password"
-                          /* minLength={8}*/
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="exampleCheck1"
-                      />
-                      <label className="form-check-label">Check me out</label>
-                    </div>
-                    <button type="submit" className="btn btn-primary">
-                      Login
-                    </button>
-                    <div class="col-12">
-                      <p class="small mb-0">Don't have account? <Link to="/register">Create an account</Link></p>
-                    </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
   );
 }
 export default Auth;
