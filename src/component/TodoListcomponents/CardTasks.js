@@ -40,6 +40,7 @@ const CardTaks = ({ taskObject, index, deleteTask , updateListTask}) => {
         deleteTask(index);
     };
 
+
     return (
         <div className="">
             <div className="col">
