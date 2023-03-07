@@ -123,12 +123,12 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
 
-  const username = req.body.username;// it gets the data form the front end.
-  const password = req.body.password;
-console.log(username, password);
+//  const username = req.body.username;// it gets the data form the front end.
+//  const password = req.body.password;
+
   // it works
-//  let username = "joy00223";
-//  let password = "123";
+  let username = "jooy";
+  let password = "12345678";
 
   db.query('SELECT * FROM User WHERE UserName = ?;',
       username,
@@ -146,6 +146,16 @@ console.log(username, password);
                 expiresIn: 300, // token expires in 5 minutes
               });
               req.session.user = result;
+
+              const sql = `UPDATE User SET Token =? WHERE Id = ?`;
+              db.query(
+                  sql,
+                  [token, id],
+                  (err, result) => {
+                    console.log(err);
+                  },
+                  console.log('inserted successfully'),
+              )
 
               //res.send(result);
               res.json({auth: true, token: token, result: result});
