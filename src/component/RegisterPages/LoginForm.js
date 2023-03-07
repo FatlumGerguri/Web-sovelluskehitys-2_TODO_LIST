@@ -18,20 +18,17 @@ function Auth(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [data, setDataa] = useState([]);
-
-  //const gotToNextPage = () => moveTO("/register");
+  axios.defaults.withCredentials = true;
+  const gotToNextPage = () => moveTO("/todolist");
 
   const postLogin = () => {
-    fetch("http://localhost:5000/login", {
-      method: "POST",
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-      headers: {
-        "Content-Type": "application.json",
-      },
+    axios.post('http://localhost:5000/login', {
+      username: username,
+      password: password,
+      //userId: Math.random().toString(36).slice(2);
+
     })
+
         .then((res) => res.json())
         .then((result) => {
           if (result.error_message) {
@@ -39,13 +36,21 @@ function Auth(props) {
           } else {
             console.log(result.data);
             localStorage.setItem("username", result.username);
-            // moveTO("/register");
+            moveTO("/register");
           }
           console.log(result);
         })
         .catch((error) => console.log("Error Login form", error));
   };
 
+  const handleUser = (event) => {
+    setUsername(event.target.value);
+    console.log(event.target.value)
+  };
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+    console.log(event.target.value)
+  };
   const handleSubmitLogin = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -86,7 +91,7 @@ function Auth(props) {
                               placeholder="User name"
                               minLength={4}
                               value={username}
-                              onChange={(e) => setUsername(e.target.value)}
+                              onChange={handleUser}
                               //{...register("firstName", { required: true, maxLength: 10 })}
                           /></FloatingLabel>
                         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -107,7 +112,7 @@ function Auth(props) {
                               required
                               minLength={6}
                               //pattern={Patter_PASS}
-                              onChange={(e) => setPassword(e.target.value)}
+                              onChange={handlePassword}
                               /* {...register("password", {
                     required: true,
                     minLength: 6,
@@ -132,9 +137,9 @@ function Auth(props) {
           </p>*/}
                       <p className="mb-0 text-center">
                         Already have an account?
-                        <a href="#" className="text-primary fw-bold ">
-                          <Link to="/register"> Sign Up</Link>
-                        </a>
+
+                          <Link className="text-primary fw-bold " to="/register"> Sign Up</Link>
+
                       </p>
                     </div>
                   </div>

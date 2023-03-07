@@ -71,7 +71,7 @@ db.connect(function(err) {
 app.post('/register', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-
+console.log(username, password);
   //it worked by using bcrypt
 // let username = "joy00223";
 // let password = "123";
@@ -125,7 +125,7 @@ app.post('/login', (req, res) => {
 
   const username = req.body.username;// it gets the data form the front end.
   const password = req.body.password;
-
+console.log(username, password);
   // it works
 //  let username = "joy00223";
 //  let password = "123";

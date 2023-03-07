@@ -16,22 +16,19 @@ function Register(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [data, setDataa] = useState([]);
-
+  axios.defaults.withCredentials = true;
   //Password patter
   //const Patter_PASS = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/;
 
-  const addUser = async (username, password) => {
-    await axios("http://localhost:5000/register", {
-      method: "POST",
-      body: JSON.stringify({
-        username: username,
-        password: password,
-        //userId: Math.random().toString(36).slice(2);
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
+  const addUser = async () => {
+    axios.post('http://localhost:5000/register', {
+      username: username,
+      password: password,
+      //userId: Math.random().toString(36).slice(2);
+
+      })
+
+
         .then((response) => response.json())
         .then((data) => {
           setDataa((posts) => [data, ...posts]);
@@ -43,11 +40,20 @@ function Register(props) {
         });
   };
 
+  const handleUser = (event) => {
+    setUsername(event.target.value);
+    console.log(event.target.value)
+  };
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+    console.log(event.target.value)
+  };
   const handleSubmitRegister = (event) => {
     const form = event.currentTarget;
+    addUser();
     if (form.checkValidity() === false) {
       event.preventDefault();
-      addUser(username, password);
+
       event.stopPropagation();
     }
 
@@ -82,7 +88,7 @@ function Register(props) {
                               placeholder="User name"
                               minLength={4}
                               value={username}
-                              onChange={(e) => setUsername(e.target.value)}
+                              onChange={handleUser}
                               //{...register("firstName", { required: true, maxLength: 10 })}
                           /></FloatingLabel>
                         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -103,7 +109,7 @@ function Register(props) {
                               required
                               minLength={6}
                               //pattern={Patter_PASS}
-                              onChange={(e) => setPassword(e.target.value)}
+                              onChange={handlePassword}
                               /* {...register("password", {
                     required: true,
                     minLength: 6,
@@ -128,9 +134,9 @@ function Register(props) {
           </p>*/}
                       <p className="mb-0 text-center">
                         Already have an account?
-                        <a href="#" className="text-primary fw-bold ">
-                          <Link to="/signin"> Log in</Link>
-                        </a>
+
+                          <Link className="text-primary fw-bold " to="/"> Log in</Link>
+
                       </p>
                     </div>
                   </div>
