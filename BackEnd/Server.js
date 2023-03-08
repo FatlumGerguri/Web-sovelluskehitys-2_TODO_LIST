@@ -92,13 +92,15 @@ console.log(username, password);
 });
 
 const verifyJWT = (req, res, next) => {
-  const token = req.headers['x-access-token'];
+  const head = req.headers.authorization;
+  const token = head && head.split(' ')[1];
+  console.log(token);
   if (!token) {
     res.send('You need a token');
   } else {
     jwt.verify(token, Jwt_key, (err, decoded) => {
       if (err) {
-        res.json({auth: false, message: 'failed to authenticate'});
+        res.send(403);
       } else {
         req.userId = decoded.id;
         next();
@@ -108,7 +110,7 @@ const verifyJWT = (req, res, next) => {
 };
 
 app.get('/isUserAuth', verifyJWT, (req, res) => {
-  res.send('You are authenticated');
+  res.send(true);
 });
 
 // checks the user is loggedIn

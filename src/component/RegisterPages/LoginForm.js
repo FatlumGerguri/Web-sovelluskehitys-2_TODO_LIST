@@ -30,10 +30,10 @@ function Auth(props) {
         .then((res) => {
           console.log(res);
           console.log(res.data);
+          localStorage.setItem("Token",res.data.token);
         })
       .catch((error) => console.log("Error Login form", error));
       alert("Kiitos, uusi tapahtuma on lähetetty!");
-      history.push("/todolist");
   };
 
   const handleUser = (event) => {
@@ -45,14 +45,13 @@ function Auth(props) {
     console.log(event.target.value);
   };
   const handleSubmitLogin = (event) => {
+
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      postLogin(username, password);
-      event.stopPropagation();
+    if (form.checkValidity() === true) {
+      postLogin();
+      history("/todolist");
     }
 
-    setValidated(true);
   };
 
   return (
