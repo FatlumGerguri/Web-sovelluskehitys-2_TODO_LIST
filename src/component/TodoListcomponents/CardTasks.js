@@ -3,7 +3,7 @@ import "../TodoListcomponents/todoList.css"
 import EditTask from "../TodoListcomponents/modalsTask/EditTask"
 import axios from "axios";
 
-const CardTaks = ({ taskObject, index, deleteTask , updateListTask}) => {
+const CardTaks = ({ taskObject, index,id, deleteTask , updateListTask}) => {
     const [modal, setModal] = useState(false);
     axios.defaults.withCredentials = true;
 
@@ -39,12 +39,7 @@ const CardTaks = ({ taskObject, index, deleteTask , updateListTask}) => {
     };
 
     const handleDelete = () => {
-        let ids = axios.delete('http://localhost:5000/', index)
-            .then((response) => response.json())
-            .catch((error) => {
-                console.log("Error message::.. ", error.message);
-            });
-        deleteTask(ids);
+        deleteTask(id,index);
     };
 
 

@@ -31,7 +31,9 @@ const CreateTasks = ({ modal, toggle, save }) => {
     const [taskCompleted, setTasCompleted] = useState('')
     //const [taskName, setTaskName] = useState("");
     const [taskDescription, setDescription] = useState("");
+    axios.defaults.withCredentials = true;
 
+    /// Todo lähetys
     const handleSaves = (e) => {
         e.preventDefault();
         let taskObj = {};
@@ -45,7 +47,9 @@ const CreateTasks = ({ modal, toggle, save }) => {
             completed: taskCompleted
             //userId: Math.random().toString(36).slice(2);
 
-        })
+        },{
+           headers: {Authorization: 'Bearer: '+localStorage.getItem("Token")},
+       })
         save(taskObj);
         console.log(taskObj)
         setTaskTitle("")

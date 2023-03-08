@@ -1,45 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal} from "react-bootstrap";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const EditTask = ({modal, toggle, updateTask, taskObject }) => {
 
+    const history = useNavigate();
     const [taskTitle, setTaskTitle] = useState("");
     const [taskDate, setTaskDate] = useState("");
     const [taskCompleted, setTasCompleted] = useState('')
     const [taskDescription, setTaskDescription] = useState("");
+    axios.defaults.withCredentials = true;
 
     /*const [taskName, setTaskName] = useState("");
     const [taskDescription, setDescription] = useState("");
 */
     useEffect(() => {
+        console.log(taskObject.id);
         setTaskTitle(taskObject.Title)
         setTaskDate(taskObject.Date)
         setTaskDescription(taskObject.Description)
     }, []);
 
+    ///Todo Tee tämä edit
     const handleUpdate = (e) => {
         e.preventDefault();
+
+
         let tempobj = {}
         tempobj["Title"] = taskTitle;
         tempobj["Date"] = taskDate;
         tempobj["Description"] = taskDescription;
-       let taskss = axios.put('http://localhost:5000/InsertData', {
-           title: taskTitle,
-           date: taskDate,
-           description: taskDescription,
-           completed: taskCompleted
-           //userId: Math.random().toString(36).slice(2);
+        let taskss = axios.post('http://localhost:5000/UpdateData', {
+            title: taskTitle,
+            id: taskObject.id,
+            date: taskDate,
+            description: taskDescription,
+            //userId: Math.random().toString(36).slice(2);
 
-       })
-        updateTask(tempobj);
-        console.log(taskss)
+        },{
+            headers: {Authorization: 'Bearer: '+localStorage.getItem("Token")},
+        })
+        toggle();
+
     };
-        /*let tempobj = {}
-        tempobj['Name'] = taskName
-        tempobj['Description'] = taskDescription
-        updateTask(tempobj)
-    };*/
+
+
 
     return (
         <>
