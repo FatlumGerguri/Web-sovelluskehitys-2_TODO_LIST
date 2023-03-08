@@ -123,12 +123,12 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
 
-//  const username = req.body.username;// it gets the data form the front end.
-//  const password = req.body.password;
+  const username = req.body.username;// it gets the data form the front end.
+  const password = req.body.password;
 
   // it works
-  let username = "jooy";
-  let password = "12345678";
+ // let username = "jooy";
+ // let password = "12345678";
 
   db.query('SELECT * FROM User WHERE UserName = ?;',
       username,
@@ -175,14 +175,39 @@ app.get('/', (req, res) => {
 });
 
 app.get('/data', (req, res) => {
-  let sql = `SELECT * FROM User`;
+  let sql = `SELECT * FROM Task`;
   db.query(sql, (error, results, fields) => {
     if (error) {
       return console.error(error.message);
     }
-    console.log(results[1].UserName, results[0].Password);
+    console.log(results[0].Title, results[0].Description);
     res.json(results);
   });
+});
+
+
+app.post('/InsertData', (req, res) => {
+
+  const titele = req.body.titele;
+  const date = req.body.date;
+  const discription = req.body.discription;
+  const completed = req.body.completed;
+
+  /*
+  const titele = "First Task";
+  const date = "15.03.2023";
+  const discription = "My first task";
+  const completed = "True";
+*/
+  console.log("HERE IS THE DATA: " + titele, date, discription, completed);
+
+    db.query('INSERT INTO Task (Title, Date, Description, Completed) VALUES (?,?,?,?)',
+        [titele, date, discription, completed],
+        (err, result) => {
+          console.log(err);
+        },
+        console.log('inserted the data successfully'),
+    );
 });
 
 app.listen(Server_port,
