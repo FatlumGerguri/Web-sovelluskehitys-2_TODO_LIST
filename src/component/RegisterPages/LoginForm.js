@@ -20,20 +20,17 @@ function Auth(props) {
   const [data, setDataa] = useState([]);
   axios.defaults.withCredentials = true;
 
-  const postLogin = () => {
-    axios
+  const postLogin = async () => {
+    await axios
       .post("http://localhost:5000/login", {
         username: username,
         password: password,
-        //userId: Math.random().toString(36).slice(2);
       })
         .then((res) => {
-          console.log(res);
-          console.log(res.data);
           localStorage.setItem("Token",res.data.token);
         })
       .catch((error) => console.log("Error Login form", error));
-      alert("Kiitos, uusi tapahtuma on lähetetty!");
+
   };
 
   const handleUser = (event) => {
@@ -44,12 +41,13 @@ function Auth(props) {
     setPassword(event.target.value);
     console.log(event.target.value);
   };
-  const handleSubmitLogin = (event) => {
-
+  const handleSubmitLogin = async (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === true) {
-      postLogin();
-      history("/todolist");
+      await postLogin().then(() =>{
+        window.location.reload();
+      });
     }
 
   };
@@ -66,7 +64,6 @@ function Auth(props) {
                 <p className="mb-5">Please enter your login and password!</p>
                 <div className="mb-5">
                   <Form
-                    noValidate
                     validated={validated}
                     onSubmit={handleSubmitLogin}
                   >

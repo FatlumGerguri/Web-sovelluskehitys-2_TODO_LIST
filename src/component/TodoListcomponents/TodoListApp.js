@@ -9,23 +9,22 @@ function ToDoApp() {
     const [modal, setModal] = useState(false);
     const [taskList, setTaskList] = useState([]);
 
+    axios.defaults.withCredentials = true;
     const toggle = () =>{
         setModal(!modal)
     }
-    const getDataList = async () => {
+
+    //Get all data from db
+    const getDataList =  async () => {
       /*  const {taskList} = await axios.get("http://localhost:3000/events")
         setTaskList(taskList);*/
-        await axios.get("http://localhost:3000/events")
-    .then((response)=>{
-        setTaskList(response.data)
-            console.log(response)
-        })
-            .catch((error) => {
-                console.log(error)
-            })
+        const {data} = await axios.get('http://localhost:5000/data',{headers: {Authorization: 'Bearer: '+localStorage.getItem("Token")}})
+        setTaskList(data);
+        console.log(data);
+        console.log(taskList);
     }
 
-    //Search all data from localstorage test
+    //Search all data from show in page
    useEffect(() => {
        getDataList();
        /*let result = axios.get("http://localhost:3004/events");
@@ -40,29 +39,39 @@ function ToDoApp() {
     }, []);
 
 
-    const deleteTask = (index) => {
-        let tempList = taskList
-        //tempList.splice(index, 1);
-        //localStorage.setItem("TaskList", JSON.stringify(tempList))
-       // axios.delete('https://jsonplaceholder.typicode.com/posts?userId=1')
-           // .then((response) => response.json())
-           // .then((json) => console.log(json));
-        setTaskList(tempList)
-        window.location.reload()
+//Delete Task
+    const deleteTask = (index,obID) => {
+        console.log(index);
+        console.log(taskList);
+        axios.post('http://localhost:5000/Delete', {
+            id: index,
+        },{
+            headers: {Authorization: 'Bearer: '+localStorage.getItem("Token")},
+        }).then((res) => {
+            console.log(res);
+        }).finally(() =>{
+
+        });
+        window.location.reload();
+
+
     }
 
-    const saveTasks = (taskObject) => {
-        let tempList = taskList
-        tempList.push(taskObject)
-        let result =  axios.post("http://localhost:3004/events", tempList);
-        //new Promise((x) => setTimeout(x, 1000));
-        console.log(result)
-        //localStorage.setItem("TaskList", JSON.stringify(tempList))
-        setTaskList(taskList)
-        setModal(false)
 
+    const saveTaskObjects = async () => {
+        axios.post('http://localhost:5000/InsertData')
+            .then((response) => response.json())
+                   .catch((error) => {
+                console.log(error.message);
+            });
+    }
+    const saveTasks = async (taskObject) => {
 
-        //this.setTodos({ todos: result.data });
+        taskList.push(taskObject);
+        setTaskList(taskList);
+        setModal(false);
+        window.location.reload();
+
 
     }
 
@@ -70,11 +79,10 @@ function ToDoApp() {
     const updateListTask = (obj, index) => {
         let tempList = taskList
         tempList[index] = obj
-        localStorage.setItem("TaskList", JSON.stringify(tempList));
-        //axios.put('https://jsonplaceholder.typicode.com/todos', tempList);
         setTaskList(tempList)
         window.location.reload()
     }
+
     return (
         <>
             <div className="container text-center">
@@ -86,13 +94,15 @@ function ToDoApp() {
                 <div className=" d-flex justify-content-center">
                     <h2> Todo List </h2>
                 </div>
-
                 <div className="d-flex justify-content-center">
                     <Button variant="primary mt-2" onClick={() => setModal(true)}>
-                        Creat Note
+                        Create Note
                     </Button>
                 </div>
             </div>
+
+
+
                 {/**Kaikki taskit näyttää tällää */}
                 <div className="container">
                     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
@@ -100,6 +110,7 @@ function ToDoApp() {
                             <CardTaks
                                 taskObject={obj}
                                 index={index}
+                                id={obj.id}
                                 deleteTask={deleteTask}
                                 updateListTask={updateListTask}
                             />
@@ -113,36 +124,4 @@ function ToDoApp() {
 }
 
 
-/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */ /*
-class  TodoListDB extends Component {
-    state = { todos: [] };
-
-    async componentDidMount() {
-        let result = await axios.get("http://localhost:3004/events");
-        await new Promise((x) => setTimeout(x, 1000));
-        this.setState({ todos: result.data });
-    }
-    render() {
-        return (
-            <div>
-*/
-                {/**Kaikki taskit näyttää tällää */}/*
-                <div className="container">
-                    <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-                        {this.state.todos &&  this.state.todos.map((obj, index) => (
-                            <CardTaks
-                                taskObject={obj}
-                                index={index}
-                                //deleteTask={deleteTask}
-                                //updateListTask={updateListTask}
-                            />
-                        ))}
-                    </div>
-                </div>
-            </div>
-        )
-    }
-}*/
-
-/*  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  */
 export default ToDoApp;

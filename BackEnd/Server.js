@@ -108,6 +108,28 @@ const verifyJWT = (req, res, next) => {
     });
   }
 };
+function getID(req) {
+  console.log("testing headers");
+
+  const head = req.headers.authorization;
+  let token = head && head.split(' ')[1];
+
+  console.log(token);
+
+  if (!token) {
+    token = null;
+  } else {
+    jwt.verify(token, Jwt_key, (err, decoded) => {
+      if (err) {
+        token = null;
+      } else {
+        token = decoded.id;
+      }
+    });
+
+  }
+  return token;
+}
 
 app.get('/isUserAuth', verifyJWT, (req, res) => {
   res.send(true);
@@ -177,34 +199,61 @@ app.get('/', (req, res) => {
 });
 
 app.get('/data', (req, res) => {
-  let sql = `SELECT * FROM Task`;
-  db.query(sql, (error, results, fields) => {
-    if (error) {
-      return console.error(error.message);
-    }
-    console.log(results[0].Title, results[0].Description);
-    res.json(results);
-  });
+
+  console.log("testing headers");
+
+  const head = req.headers.authorization;
+  const token = head && head.split(' ')[1];
+
+  console.log(token);
+
+  if (!token) {
+    res.send(403);
+  } else {
+    jwt.verify(token, Jwt_key, (err, decoded) => {
+      if (err) {
+        res.send(403);
+      } else {
+        const id = decoded.id;
+        try {
+          let sql = `SELECT * FROM Task WHERE user_Id=?`;
+          db.query(sql,[id], (error, results, fields) => {
+            if (error) {
+              return console.error(error.message);
+            }
+            res.json(results);
+          });
+        }catch (e) {
+          console.log(e);
+        }
+
+
+      }
+    });
+  }
+
+
 });
 
 
-app.post('/InsertData', (req, res) => {
+app.post('/InsertData',verifyJWT, (req, res) => {
 
-  const titele = req.body.titele;
+  let id = getID(req);
+  const title = req.body.title;
   const date = req.body.date;
-  const discription = req.body.discription;
+  const description = req.body.description;
   const completed = req.body.completed;
-
+  console.log("Inserted data: ", id, title, date, description, completed)
   /*
   const titele = "First Task";
   const date = "15.03.2023";
   const discription = "My first task";
   const completed = "True";
 */
-  console.log("HERE IS THE DATA: " + titele, date, discription, completed);
+  console.log("HERE IS THE DATA: " + title, date, description, completed);
 
-    db.query('INSERT INTO Task (Title, Date, Description, Completed) VALUES (?,?,?,?)',
-        [titele, date, discription, completed],
+    db.query('INSERT INTO Task (user_Id,Title, Date, Description, Completed) VALUES (?,?,?,?,?)',
+        [id,title, date, description, completed],
         (err, result) => {
           console.log(err);
         },
@@ -212,6 +261,39 @@ app.post('/InsertData', (req, res) => {
     );
 });
 
+
+app.post('/UpdateData',verifyJWT, (req, res) => {
+
+  const title = req.body.title;
+  const date = req.body.date;
+  const description = req.body.description;
+  const completed = req.body.completed;
+  const id = req.body.id;
+  console.log("Inserted data: ", id, title, date, description, completed)
+
+  db.query('UPDATE Task SET Title=?, Date=?, Description=?, Completed=? WHERE id = ?',
+      [title, date, description, completed,id],
+      (err, result) => {
+        console.log(err);
+        console.log(result);
+      },
+      console.log('inserted the data successfully'),
+  );
+});
+
+app.post('/Delete',verifyJWT, (req, res) => {
+
+  const id = req.body.id;
+  console.log("Deleted data: ", id)
+
+  db.query('DELETE FROM Task WHERE id=?',
+      [id],
+      (err, result) => {
+        console.log(err);
+      },
+      console.log('Deleted the data successfully'),
+  );
+});
 app.listen(Server_port,
     () =>
         console.log('The server is listening at http://%s:%s', Server_host,

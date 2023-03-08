@@ -7,6 +7,8 @@ import TodoListApp from "./component/TodoListcomponents/TodoListApp";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import ProtectedRoute from "./component/ProtectedRoute";
+import PublicRoute from "./component/PublicRoute";
+
 
 function App() {
 
@@ -18,10 +20,7 @@ function App() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            console.log('This will run every second! ' + auth);
             testToken();
-            console.log("testing");
-
         }, 5000);
         return () => clearInterval(interval);
     }, []);
@@ -34,35 +33,33 @@ function App() {
     }
 
     function testToken() {
-        console.log(localStorage.getItem("Token") == null);
 
         axios.get('http://localhost:5000/isUserAuth',{
             headers: {Authorization: 'Bearer: '+localStorage.getItem("Token")},
             timeout: 0
         }).then((res) => {
-            console.log(res.data + " db");
             isAuth(res.data);
         }).catch(err => {
             isAuth(false);
         }).finally(() =>{
 
         })
-
-        console.log(auth + "tämä");
-
         return auth;
     }
 
 
   return (
       <>
-          <Link  to="/todolist" onClick={testToken}>home</Link>
+
       <Routes>
           <Route element={<ProtectedRoute auth={testToken()}/>}>
             <Route path="/todolist" element={<TodoListApp />} />
           </Route>
+          <Route element={<PublicRoute auth={testToken()}/>}>
+              <Route path="/" element={<Login />} />
+          </Route>
           <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Login />} />
+
 
       </Routes>
           </>

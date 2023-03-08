@@ -3,16 +3,34 @@ import { Button, Form, Modal, Card, Container, Row } from "react-bootstrap";
 import axios from "axios";
 
 const CreateTasks = ({ modal, toggle, save }) => {
-    const [taskName, setTaskName] = useState("");
+    const [taskTitle, setTaskTitle] = useState("");
+    const [taskDate, setTaskDate] = useState("");
+    const [taskCompleted, setTasCompleted] = useState('')
+    //const [taskName, setTaskName] = useState("");
     const [taskDescription, setDescription] = useState("");
+    axios.defaults.withCredentials = true;
 
+    /// Todo lähetys
     const handleSaves = (e) => {
         e.preventDefault();
         let taskObj = {};
-        taskObj["Name"] = taskName;
+        taskObj["Title"] = taskTitle;
+        taskObj["Date"] = taskDate;
         taskObj["Description"] = taskDescription;
+       let taskss = axios.post('http://localhost:5000/InsertData', {
+            title: taskTitle,
+            date: taskDate,
+            description: taskDescription,
+            completed: taskCompleted
+            //userId: Math.random().toString(36).slice(2);
+
+        },{
+           headers: {Authorization: 'Bearer: '+localStorage.getItem("Token")},
+       })
         save(taskObj);
-        setTaskName("")
+        console.log(taskObj)
+        setTaskTitle("")
+        setTaskDate('')
         setDescription("")
     };
 
@@ -36,9 +54,18 @@ const CreateTasks = ({ modal, toggle, save }) => {
                             <Form.Label>Task name</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="taskName"
-                                value={taskName}
-                                onChange={(e) => setTaskName(e.target.value)}
+                                name="taskTitle"
+                                value={taskTitle}
+                                onChange={(e) => setTaskTitle(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Task Date</Form.Label>
+                            <Form.Control
+                                type="date"
+                                name="taskDate"
+                                value={taskDate}
+                                onChange={(e) => setTaskDate(e.target.value)}
                             />
                         </Form.Group>
                         <Form.Group>

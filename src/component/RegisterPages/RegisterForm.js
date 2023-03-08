@@ -21,23 +21,26 @@ function Register(props) {
   //const Patter_PASS = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/;
 
   const addUser = async () => {
-    axios.post('http://localhost:5000/register', {
-      username: username,
-      password: password,
-      //userId: Math.random().toString(36).slice(2);
+      if(setValidated(false)){
+        console.log("Fill all data")
+      }
+    if (setValidated(true)) {
 
-      })
+      axios.post('http://localhost:5000/register', {
+        username: username,
+        password: password,
+        //userId: Math.random().toString(36).slice(2);
 
-
-        .then((response) => response.json())
-        .then((data) => {
-          setDataa((posts) => [data, ...posts]);
-          setUsername("");
-          setPassword("");
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
+      }) .then((response) => response.json())
+          .then((data) => {
+            setDataa((posts) => [data, ...posts]);
+            setUsername("");
+            setPassword("");
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+    }
   };
 
   const handleUser = (event) => {
@@ -50,14 +53,12 @@ function Register(props) {
   };
   const handleSubmitRegister = (event) => {
     const form = event.currentTarget;
-    addUser();
     if (form.checkValidity() === false) {
       event.preventDefault();
-
       event.stopPropagation();
     }
+      addUser();
 
-    setValidated(true);
   };
 
   return (
