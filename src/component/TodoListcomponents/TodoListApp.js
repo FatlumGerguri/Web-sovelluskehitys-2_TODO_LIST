@@ -1,10 +1,9 @@
-import React, {Component, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import { Button} from "react-bootstrap";
 import CreateTaks from "../TodoListcomponents/modalsTask/CreateTaks";
 import CardTaks from "../TodoListcomponents/CardTasks"
 import NavBar from "../NavBar";
 import axios from "axios";
-import {response} from "express";
 
 function ToDoApp() {
     const [modal, setModal] = useState(false);
@@ -16,7 +15,7 @@ function ToDoApp() {
     const getDataList = async () => {
       /*  const {taskList} = await axios.get("http://localhost:3000/events")
         setTaskList(taskList);*/
-        await axios.get("meidä api")
+        await axios.get("http://localhost:3000/events")
     .then((response)=>{
         setTaskList(response.data)
             console.log(response)
