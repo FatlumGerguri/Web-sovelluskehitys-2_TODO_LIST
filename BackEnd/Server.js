@@ -185,24 +185,35 @@ app.get('/data', (req, res) => {
   });
 });
 
+app.get('/tasks', (req, res) => {
+  let sql = `SELECT * FROM Task`;
+  db.query(sql, (error, results, fields) => {
+    if (error) {
+      return console.error(error.message);
+    }
+    console.log(results[0].Title, results[0].Description);
+    res.json(results);
+  });
+});
+
 
 app.post('/InsertData', (req, res) => {
 
-  const titele = req.body.titele;
+  const title = req.body.title;
   const date = req.body.date;
-  const discription = req.body.discription;
+  const description = req.body.description;
   const completed = req.body.completed;
-
+  console.log("Inserted data: ", title, date, description, completed)
   /*
   const titele = "First Task";
   const date = "15.03.2023";
   const discription = "My first task";
   const completed = "True";
 */
-  console.log("HERE IS THE DATA: " + titele, date, discription, completed);
+  console.log("HERE IS THE DATA: " + title, date, description, completed);
 
     db.query('INSERT INTO Task (Title, Date, Description, Completed) VALUES (?,?,?,?)',
-        [titele, date, discription, completed],
+        [title, date, description, completed],
         (err, result) => {
           console.log(err);
         },

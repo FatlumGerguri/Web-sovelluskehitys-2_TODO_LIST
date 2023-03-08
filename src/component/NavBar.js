@@ -9,7 +9,7 @@ function BasicExample() {
     return (
         <Navbar bg="light" expand="lg" className="p-2">
             <Container>
-                <Navbar.Brand href="#home">TODO List</Navbar.Brand>
+                <Navbar.Brand href="/todolist">TODO List</Navbar.Brand>
 
                 <Navbar>
                     <Container>

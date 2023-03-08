@@ -4,12 +4,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./component/RegisterPages/LoginForm"
 import Register from "./component/RegisterPages/RegisterForm"
 import TodoListApp from "./component/TodoListcomponents/TodoListApp";
+import TEsTOD from "./component/TodoListcomponents/TEsTOD";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/todolist" element={<TodoListApp />} />
+          <Route path="/test" element={<TEsTOD />} />
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

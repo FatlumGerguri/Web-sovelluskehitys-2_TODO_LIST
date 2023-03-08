@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "../TodoListcomponents/todoList.css"
 import EditTask from "../TodoListcomponents/modalsTask/EditTask"
+import axios from "axios";
 
 const CardTaks = ({ taskObject, index, deleteTask , updateListTask}) => {
     const [modal, setModal] = useState(false);
+    axios.defaults.withCredentials = true;
 
     //Colors for boxes
     const colors = [
@@ -37,15 +39,20 @@ const CardTaks = ({ taskObject, index, deleteTask , updateListTask}) => {
     };
 
     const handleDelete = () => {
-        deleteTask(index);
+        let ids = axios.delete('http://localhost:5000/', index)
+            .then((response) => response.json())
+            .catch((error) => {
+                console.log("Error message::.. ", error.message);
+            });
+        deleteTask(ids);
     };
 
 
     return (
         <div className="">
-            <div className="col">
+            <div className="col text-start">
                 <div className="">
-                    <div className="card ">
+                    <div className="card" >
                         <div
                             className="card-header"
                             style={{
@@ -54,15 +61,19 @@ const CardTaks = ({ taskObject, index, deleteTask , updateListTask}) => {
                         ></div>
                         <div className="card-body">
                             <h6
-                                className="card-title"
+                                className="card-title text-center"
                                 style={{
                                     backgroundColor: colors[index % 5].secondColor,
                                     borderRadius: "5px",
                                 }}
-                            >
-                                {taskObject.Name}{" "}
-                            </h6>
-                            <p className="card-text">{taskObject.Description}</p>
+                            >{taskObject.Title}</h6>
+                           <div className="m-3">
+                               <p className="card-text">Created Date: {taskObject.Date}</p>
+                               <div className="m3 ">
+
+                                   <p className="card-text">{taskObject.Description}</p>
+                               </div>
+                           </div>
                             <div className="text-right card-icons">
                                 <div
                                     style={{
