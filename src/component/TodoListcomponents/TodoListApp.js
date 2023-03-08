@@ -114,7 +114,7 @@ function ToDoApp() {
 
                 <div className="d-flex justify-content-center">
                     <Button variant="primary mt-2" onClick={() => setModal(true)}>
-                        Creat Note
+                        Create a Note:
                     </Button>
                 </div>
             </div>

@@ -11,6 +11,8 @@ import {
   Card,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import CircleLoader from "../TodoListcomponents/CircleLoader";
 
 function Auth(props) {
   const history = useNavigate();
@@ -57,20 +59,40 @@ function Auth(props) {
 
   return (
     <Container fluid="md">
+
       <Row className="vh-100 d-flex justify-content-center align-items-center">
         <Col md={8} lg={6} xs={12}>
+          <motion.div initial="hidden" animate="visible" variants={{
+            hidden: {
+              scale: .8,
+              opacity: 0
+            },
+            visible: {
+              scale: 1,
+              opacity: 1,
+              transition: {
+                delay: .4
+              }
+            }
+          }}>
           <div className="border border-3 border-primary rounded"></div>
+
           <Card className="shadow border border-3">
             <Card.Body>
+
               <div className="mb-1 mt-md-4">
+
                 <h2 className="fw-bold mb-2 text-uppercase">Log in</h2>
                 <p className="mb-5">Please enter your login and password!</p>
+
                 <div className="mb-5">
+
                   <Form
                     noValidate
                     validated={validated}
                     onSubmit={handleSubmitLogin}
                   >
+
                     <Form.Group controlId="validationCustom01">
                       <FloatingLabel
                         controlId="floatingInput"
@@ -124,6 +146,7 @@ function Auth(props) {
                     <div className="d-grid">
                       <Button type="submit">Log in</Button>
                     </div>
+
                   </Form>
                   <div className="mt-3">
                     {/*<p className="mb-0 text-center">
@@ -144,6 +167,7 @@ function Auth(props) {
               </div>
             </Card.Body>
           </Card>
+          </motion.div>
         </Col>
       </Row>
     </Container>

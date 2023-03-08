@@ -16,7 +16,7 @@ function BasicExample() {
                         <Navbar.Toggle />
                         <Navbar.Collapse className="justify-content-end">
                             <Navbar.Text>
-                                 <Link className="text-primary fw-bold " to="/"> Sing out</Link>
+                                 <Link className="text-primary fw-bold " to="/"> Sign Out</Link>
                             </Navbar.Text>
                         </Navbar.Collapse>
                     </Container>

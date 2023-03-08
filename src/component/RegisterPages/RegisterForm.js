@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import { motion } from "framer-motion";
 import {
   Container,
   Button,
@@ -65,12 +66,29 @@ function Register(props) {
       <Container fluid="md">
         <Row className="vh-100 d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
+            <motion.div initial="hidden" animate="visible" variants={{
+              hidden: {
+                scale: .8,
+                opacity: 0
+              },
+              visible: {
+                scale: 1,
+                opacity: 1,
+                transition: {
+                  delay: .4
+                }
+              }
+            }}>
             <div className="border border-3 border-primary rounded"></div>
             <Card className="shadow border border-3">
               <Card.Body>
                 <div className="mb-1 mt-md-4">
+
                   <h2 className="fw-bold mb-2 text-uppercase">Sign Up</h2>
                   <p className="mb-5">Please enter your username and password!</p>
+
+
+
                   <div className="mb-5">
                     <Form
                         noValidate
@@ -141,9 +159,11 @@ function Register(props) {
                       </p>
                     </div>
                   </div>
+
                 </div>
               </Card.Body>
             </Card>
+            </motion.div>
           </Col>
         </Row>
       </Container>

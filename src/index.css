@@ -38,3 +38,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.loader{
+  width: 10px;
+  height: 10px;
+  margin: 40px auto;
+  border-radius: 50%;
+  background: #D23F1F;
+}
+
+#parent {
+  display: flex;
+}
+#narrow {
+  width: 90px;
+  /* Just so it's visible */
+}
+#wide {
+
+  width: 150px;
+  /* Just so it's visible */
+}
