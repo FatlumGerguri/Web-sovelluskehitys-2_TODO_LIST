@@ -258,6 +258,7 @@ app.post('/InsertData',verifyJWT, (req, res) => {
           console.log(err);
         },
         console.log('inserted the data successfully'),
+        res.send(true)
     );
 });
 
@@ -278,6 +279,7 @@ app.post('/UpdateData',verifyJWT, (req, res) => {
         console.log(result);
       },
       console.log('inserted the data successfully'),
+      res.send(true)
   );
 });
 
@@ -292,6 +294,7 @@ app.post('/Delete',verifyJWT, (req, res) => {
         console.log(err);
       },
       console.log('Deleted the data successfully'),
+      res.send(true)
   );
 });
 app.listen(Server_port,

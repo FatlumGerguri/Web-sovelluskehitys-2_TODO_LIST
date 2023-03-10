@@ -50,6 +50,9 @@ const CreateTasks = ({ modal, toggle, save }) => {
         },{
            headers: {Authorization: 'Bearer: '+localStorage.getItem("Token")},
        })
+           .then((response) => {
+               console.log(response);
+           })
         save(taskObj);
         console.log(taskObj)
         setTaskTitle("")
