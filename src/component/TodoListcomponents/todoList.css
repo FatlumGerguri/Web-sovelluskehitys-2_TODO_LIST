@@ -42,3 +42,34 @@
     padding: 14px;
     font-size: 14px;
 }
+
+#button1{
+    font-size: 19px;
+    background-color: #419af2;
+    color: white;
+    border-radius: 9px;
+    border-color: #419af2;
+
+}
+
+#button2{
+    font-size: 19px;
+    background-color: #419af2;
+    color: white;
+    border-radius: 9px;
+    border-color: #419af2;
+
+}
+
+#cancelbutton{
+    font-size: 19px;
+    background-color: red;
+    color: white;
+    border-radius: 9px;
+    border-color: red;
+
+}
+
+#logout{
+    color: red;
+}

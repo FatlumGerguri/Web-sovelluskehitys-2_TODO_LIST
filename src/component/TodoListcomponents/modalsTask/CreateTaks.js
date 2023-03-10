@@ -91,6 +91,19 @@ const CreateTasks = ({ modal, toggle, save }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
+                        <motion.div initial="hidden" animate="visible" variants={{
+                            hidden: {
+                                scale: .8,
+                                opacity: 0
+                            },
+                            visible: {
+                                scale: 1,
+                                opacity: 1,
+                                transition: {
+                                    delay: .4
+                                }
+                            }
+                        }}>
                         <Form.Group>
                             <Form.Label>Task name</Form.Label>
                             <Form.Control
@@ -119,15 +132,34 @@ const CreateTasks = ({ modal, toggle, save }) => {
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </Form.Group>
+                        </motion.div>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleSaves}>
+                    <motion.button id="button2" variant="secondary" onClick={handleSaves}
+                                   whileHover={{
+                                       scale: 1.1,
+                                       textShadow: "0px 0px 8px rgb(255,255,255)",
+                                       boxShadow:  "0px 0px 8px rgb(255,255,255)",
+
+
+
+                                   }}
+                    >
                         Create
-                    </Button>
-                    <Button variant="primary" onClick={toggle}>
+                    </motion.button>
+                    <motion.button id="cancelbutton" variant="primary" onClick={toggle}
+                                   whileHover={{
+                                       scale: 1.1,
+                                       textShadow: "0px 0px 8px rgb(255,255,255)",
+                                       boxShadow:  "0px 0px 8px rgb(255,255,255)",
+
+
+
+                                   }}
+                    >
                         Cancel
-                    </Button>
+                    </motion.button>
                 </Modal.Footer>
             </Modal>
         </div>

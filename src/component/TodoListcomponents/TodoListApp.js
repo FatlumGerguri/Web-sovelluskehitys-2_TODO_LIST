@@ -4,6 +4,7 @@ import CreateTaks from "../TodoListcomponents/modalsTask/CreateTaks";
 import CardTaks from "../TodoListcomponents/CardTasks"
 import NavBar from "../NavBar";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 function ToDoApp() {
     const [modal, setModal] = useState(false);
@@ -95,11 +96,20 @@ function ToDoApp() {
                     <h2> Todo List </h2>
                 </div>
                 <div className="d-flex justify-content-center">
-                    <Button variant="primary mt-2" onClick={() => setModal(true)}>
+                    <motion.button id="button1" variant="primary mt-2" onClick={() => setModal(true)}
+                                   whileHover={{
+                                       scale: 1.1,
+                                       textShadow: "0px 0px 8px rgb(255,255,255)",
+                                       boxShadow:  "0px 0px 8px rgb(255,255,255)",
+
+
+
+                    }}
+                    >
 
                         Create a Note:
 
-                    </Button>
+                    </motion.button>
                 </div>
             </div>
 

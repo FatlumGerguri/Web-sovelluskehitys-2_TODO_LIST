@@ -26,7 +26,7 @@ function BasicExample() {
 
  
 
-                                 <Link className="text-primary fw-bold " onClick={LogOut} to="/"> Sing out</Link>
+                                 <Link id="logout" className="text-primary fw-bold " onClick={LogOut} to="/"> Sign out</Link>
 
                             </Navbar.Text>
                         </Navbar.Collapse>
